@@ -93,6 +93,8 @@ function $LogProvider() {
        */
       warn: consoleLog('warn'),
 
+      dead: consoleLog('dead'),
+
       /**
        * @ngdoc method
        * @name $log#error
