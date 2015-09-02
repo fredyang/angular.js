@@ -46,6 +46,7 @@
  */
 function $LogProvider() {
   var debug = true,
+      callback;
       self = this;
 
   /**
@@ -62,6 +63,17 @@ function $LogProvider() {
     } else {
       return debug;
     }
+  };
+
+  /**
+   * @ngdoc method
+   * @name $logProvider#setCallback
+   * @description
+   * @param {function=} callback set by user
+   * @returns {*}
+   */
+  this.setCallback = function (fn) {
+    callback = fn;
   };
 
   this.$get = ['$window', function($window) {
@@ -92,6 +104,8 @@ function $LogProvider() {
        * Write a warning message
        */
       warn: consoleLog('warn'),
+
+      dead: consoleLog('dead'),
 
       /**
        * @ngdoc method
@@ -158,6 +172,7 @@ function $LogProvider() {
       // or we are IE where console.log doesn't have apply so we log at least first 2 args
       return function(arg1, arg2) {
         logFn(arg1, arg2 == null ? '' : arg2);
+        callback && callback(arg1, arg2 == null ? '' : arg2);
       };
     }
   }];
